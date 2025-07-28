@@ -1,17 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ka">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TBC OAuth Redirect</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            gap: 20px;
+        }
+
+        button {
+            padding: 20px 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 12px;
+            background-color: #1a73e8;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #155ab6;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        a.hidden-link {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <button id="redirectBtn">გადახდა TBC-ის მეშვეობით</button>
+
+    <button id="redirectBtn">window.location.href = redirectUrl</button>
+    <button id="hiddenRedirectBtn">a.click();</button>
 
     <script>
+        const redirectUrl = "https://api.tbcbank.ge/psd2/openbanking/oauth/authorize?client_id=PSDGE-NBG-0100-7704&scope=PIS:f92f724c-24fd-4e4a-a6ce-73f4517a931e&response_type=code&code_challenge=i2NioFWbIG37RHyvKxxrLveJUUOb7XQjxIMiQJl8vLo&code_challenge_method=S256&redirect_uri=https%3A%2F%2Fpay.flitt.com%2Fopb%2Fpayment%2Fredirect%2F&ui_locales=en&state=cDozNDA0NDpGTFRJRC0yMTY2MDg3MjI0LQ==&nonce=c88668cb-4709-4435-b517-9817581f9e20";
+
         document.getElementById("redirectBtn").addEventListener("click", function () {
-            const redirectUrl = "https://api.tbcbank.ge/psd2/openbanking/oauth/authorize?client_id=PSDGE-NBG-0100-7704&scope=PIS:f92f724c-24fd-4e4a-a6ce-73f4517a931e&response_type=code&code_challenge=i2NioFWbIG37RHyvKxxrLveJUUOb7XQjxIMiQJl8vLo&code_challenge_method=S256&redirect_uri=https%3A%2F%2Fpay.flitt.com%2Fopb%2Fpayment%2Fredirect%2F&ui_locales=en&state=cDozNDA0NDpGTFRJRC0yMTY2MDg3MjI0LQ==&nonce=c88668cb-4709-4435-b517-9817581f9e20";
             window.location.href = redirectUrl;
         });
+
+        document.getElementById("hiddenRedirectBtn").addEventListener("click", function () {
+            // თუ უკვე არსებობს ლინკი, წავშალოთ
+            const existing = document.getElementById("dynamicLink");
+            if (existing) existing.remove();
+
+            // შევქმნათ ახალი <a> ელემენტი
+            const a = document.createElement("a");
+            a.href = redirectUrl;
+            a.id = "dynamicLink";
+            a.className = "hidden-link";
+            document.body.appendChild(a);
+
+            // პროგრამულად დავაჭიროთ
+            a.click();
+        });
     </script>
+
 </body>
 </html>
